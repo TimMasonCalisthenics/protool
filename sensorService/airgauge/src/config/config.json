@@ -1,0 +1,61 @@
+{
+    "main_service_url": "http://localhost:5000/api/v1/sensors/raw",
+    "retry": {
+        "max_attempts": 10,
+        "delay_ms": 500,
+        "backoff": 1.5
+    },
+    "settings-airgauge": {
+        "Sensor-ID": "Air01",
+        "interval": 0.8,
+        "number_device": 5,
+        "number_module": 1
+    },
+    "airgauge": {
+        "1": {
+            "iscalmax": true,
+            "iscalmin": true,
+            "key": "AirKey01",
+            "x0": -0.5017,
+            "x1": -0.5126,
+            "y0": 50.06,
+            "y1": 50.035
+        },
+        "2": {
+            "iscalmax": true,
+            "iscalmin": true,
+            "key": "AirKey02",
+            "x0": 0.7316,
+            "x1": 0.702,
+            "y0": 49.625,
+            "y1": 49.6
+        },
+        "3": {
+            "iscalmax": true,
+            "iscalmin": true,
+            "key": "AirKey03",
+            "x0": -0.4136,
+            "x1": -0.4339,
+            "y0": 50.06,
+            "y1": 50.035
+        },
+        "4": {
+            "iscalmax": true,
+            "iscalmin": true,
+            "key": "AirKey04",
+            "x0": -0.2598,
+            "x1": -0.3416,
+            "y0": 59.94,
+            "y1": 59.91
+        },
+        "5": {
+            "iscalmax": true,
+            "iscalmin": true,
+            "key": "AirKey05",
+            "x0": 1.0152,
+            "x1": 0.418,
+            "y0": 141.015,
+            "y1": 140.97
+        }
+    }
+}

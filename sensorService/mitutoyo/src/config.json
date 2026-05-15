@@ -1,0 +1,17 @@
+{
+    "machine_id": "Mitu01",
+    "post_url": "http://localhost:5000/api/v1/sensors/raw",
+    "mapping": {
+        "DT10007": "MituKey01",
+        "DT10005": "MituKey02"
+    },
+    "serial": {
+        "mode": "manual",
+        "port": "COM3",
+        "baudrate": 57600,
+        "timeout": 1,
+        "vid": "",
+        "pid": "",
+        "serial_number": null
+    }
+}

@@ -1,0 +1,6 @@
+waitress
+flask
+tenacity
+Nuitka
+pydantic
+flask_cors
