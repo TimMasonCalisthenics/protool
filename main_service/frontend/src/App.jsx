@@ -38,37 +38,37 @@ function Navigation() {
       {
         path: '/manager-user',
         label: 'Manager User',
-        icon: <HiOutlineUsers size={22} />,
+        icon: <HiOutlineUsers size={15} />,
         roles: ['admin', 'supervisor']
       },
       {
         path: '/add-product',
         label: 'Product Management',
-        icon: <HiOutlinePlusCircle size={22} />,
+        icon: <HiOutlinePlusCircle size={15} />,
         roles: ['admin', 'supervisor']
       },
       {
         path: '/sensor-settings',
         label: 'Sensor Settings',
-        icon: <HiCpuChip size={22} />,
+        icon: <HiCpuChip size={15} />,
         roles: ['admin', 'supervisor', 'operator']
       },
       {
         path: '/measurement-flow', 
         label: 'Measurement',
-        icon: <HiOutlineClipboardDocumentCheck size={22} />,
+        icon: <HiOutlineClipboardDocumentCheck size={15} />,
         roles: ['admin', 'supervisor', 'operator']
       },
       {
         path: '/measurement-history', 
         label: 'Measurement History',
-        icon: <HiOutlinePresentationChartLine size={22} />,
+        icon: <HiOutlinePresentationChartLine size={15} />,
         roles: ['admin', 'supervisor', 'operator']
       },
       {
         path: '/active-product-edit',
         label: 'Active Product Edit',
-        icon: <HiOutlineWrench size={22} />,
+        icon: <HiOutlineWrench size={15} />,
         roles: ['admin', 'supervisor']
       }
     ];
@@ -89,27 +89,27 @@ function Navigation() {
         <div className='absolute bottom-0 w-full h-3/9 bg-blue-300 opacity-20'></div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-8">
+        <div className="flex items-center justify-between h-12">
+          <div className="flex items-center gap-2">
             <div className="flex-shrink-0">
-              <img className='w-50' src="./assets/icon.png" alt="logo" />
+              <img className='w-25' src="./assets/icon.png" alt="logo" />
             </div>
-            <div className="hidden lg:flex space-x-2">
+            <div className="hidden md:flex space-x-1">
               {navItems.map((item) => (
-                <Link key={item.path} to={item.path} className={`px-2 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center gap-2 ${location.pathname === item.path ? 'bg-gray-500/10 text-black dark:text-gray-300' : 'text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5'}`}>
+                <Link key={item.path} to={item.path} className={`px-1 py-1 rounded-md text-xs font-medium transition duration-200 flex items-center gap-2 ${location.pathname === item.path ? 'bg-gray-500/10 text-black dark:text-gray-300' : 'text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5'}`}>
                   <span>{item.icon}</span>
                   {item.label}
                 </Link>
               ))}
             </div>
           </div>
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-2">
             <button onClick={toggleTheme} className="p-2 rounded-lg text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
               {theme === 'dark' ? <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg> : <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>}
             </button>
             <button onClick={handleLogout} className="px-4 py-2 text-xl z-50 font-bold text-red-600 hover:text-red-800 hover:bg-red-50 dark:text-red-500 dark:hover:bg-red-900/20 rounded-lg transition duration-200">Logout</button>
           </div>
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-2">
             <button onClick={toggleTheme} className="p-2 rounded-lg text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
               {theme === 'dark' ? <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg> : <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>}
             </button>
@@ -120,7 +120,7 @@ function Navigation() {
         </div>
       </div>
       {isMobileMenuOpen && (
-        <div className="lg:hidden glass-card border-t border-white/10">
+        <div className="md:hidden glass-card border-t border-white/10">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
               <Link key={item.path} to={item.path} onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium flex items-center gap-2 ${location.pathname === item.path ? 'bg-gray-500/10 text-gray-600 dark:text-gray-300' : 'text-secondary hover:text-primary hover:bg-black/5 dark:hover:bg-white/5'}`}>
