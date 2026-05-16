@@ -1,11 +1,12 @@
 // QualityCheckGauge.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiOutlineQrCode, HiOutlineCheckCircle, HiOutlineXMark, HiPlay, HiPause } from "react-icons/hi2";
 
 function QualityCheckGauge() {
-  // สลับสถานะเพื่อดูหน้า Mockup: false = หน้าสแกน, true = หน้าเริ่มวัดงานแล้ว
+  // สถานะหน้าจอ: false = หน้าสแกน, true = หน้าเริ่มวัดงานแล้ว
   const [isStarted, setIsStarted] = useState(true); 
   const [serial, setSerial] = useState("");
+
   // ================= [ ระบบ Timer - Hardcode ] =================
   const [seconds, setSeconds] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -37,7 +38,7 @@ function QualityCheckGauge() {
   };
   // ============================================================
 
-  // ข้อมูลจำลอง (Mock Data) สำหรับจุดวัดประเภทต่างๆ เพื่อดูพิกัดความสมดุลบนจอ 13 นิ้ว
+  // ข้อมูลจำลอง (Mock Data) สำหรับจุดวัดแกน XY
   const mockPoints = [
     { name: "AIRPOINT 1", xValue: 50.012, xPass: true, yValue: 49.998, yPass: true, finalPass: true },
     { name: "AIRPOINT 2", xValue: 50.054, xPass: false, yValue: 50.002, yPass: true, finalPass: false },
@@ -47,30 +48,57 @@ function QualityCheckGauge() {
 
   const handleStart = (e) => {
     e.preventDefault();
-    if (serial.trim()) setIsStarted(true);
+    if (serial.trim()) {
+      setIsStarted(true);
+      handleStartTimer(); // เริ่มจับเวลาทันทีที่สแกนงาน
+    }
   };
 
-  const handleReset = () => {
+  const handleResetAll = () => {
     setIsStarted(false);
     setSerial("");
+    handleResetTimer();
   };
 
   return (
     <div className="w-full space-y-3">
-      {/* Top Header Bar แบบกระชับสัดส่วนสูงเพียงเล็กน้อย */}
+      {/* Top Header Bar */}
       <div className="flex justify-between items-center bg-card p-3 rounded-xl border border-white/10 shadow-sm">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-bold text-primary">Measurement: XY-Axis Simultaneous</h1>
+        <div className="flex items-center gap-1">
+          <h1 className="text-xz font-bold text-primary">Measurement: XY-Axis</h1>
           {isStarted && (
-            <span className="text-xs px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md font-mono">
+            <span className="text-xs px-2 py-0.1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md font-mono">
               SN: {serial || "MOCK-SERIAL-1234"}
             </span>
+          )}
+
+          {/* ⏱️ ก้อน UI สำหรับระบบ Timer วางต่อจาก Serial Number */}
+          {isStarted && (
+            <div className="flex items-center gap-1 bg-black/20 px-1 py-1 rounded-lg border border-white/5 ml-2">
+              <span className="text-xs text-secondary font-medium">Cycle Time:</span>
+              <span className="text-sm font-mono font-bold text-accent animate-pulse">{formatTime(seconds)}</span>
+              
+              <div className="flex gap-1 ml-1 border-l border-white/10 pl-2">
+                {!isTimerRunning ? (
+                  <button onClick={handleStartTimer} className="p-1 bg-green-500/20 text-green-400 hover:bg-green-500/30 rounded transition-colors" title="Start">
+                    <HiPlay size={12} />
+                  </button>
+                ) : (
+                  <button onClick={handleStopTimer} className="p-1 bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 rounded transition-colors" title="Pause">
+                    <HiPause size={12} />
+                  </button>
+                )}
+                <button onClick={handleResetTimer} className="text-[10px] px-1.5 py-0.5 bg-white/5 hover:bg-white/10 rounded text-gray-400 transition-colors">
+                  Clear
+                </button>
+              </div>
+            </div>
           )}
         </div>
         
         {isStarted && (
           <div className="flex gap-2">
-            <button onClick={handleReset} className="flex items-center gap-1 bg-red-500/10 text-red-500 border border-red-500/20 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-500/20 transition-colors">
+            <button onClick={handleResetAll} className="flex items-center gap-1 bg-red-500/10 text-red-500 border border-red-500/20 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-500/20 transition-colors">
               <HiOutlineXMark size={14}/> Reset View
             </button>
             <button className="flex items-center gap-1 bg-green-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-green-700 shadow-sm transition-colors">
@@ -97,20 +125,17 @@ function QualityCheckGauge() {
           </form>
         </div>
       ) : (
-        /* 2. หน้าจอ Dashboard วัด XY พร้อมกันในหน้าเดียว (Grid Layout ปรับสมดุลจอ 13 นิ้ว) */
+        /* 2. หน้าจอ Dashboard วัด XY พร้อมกันในหน้าเดียว */
         <div className="grid grid-cols-2 gap-3">
           {mockPoints.map((point) => (
             <div key={point.name} className="bg-card p-3 rounded-xl border border-white/5 space-y-2 shadow-sm flex flex-col justify-between">
-              {/* ชื่อจุดวัด */}
               <div className="flex justify-between items-center border-b border-white/5 pb-1">
                 <span className="text-xs font-bold text-accent uppercase tracking-wider">{point.name}</span>
                 <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold uppercase ${point.finalPass ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                   {point.finalPass ? "PASS" : "NG"}
                 </span>
               </div>
-              {/*Timer ตัวนับเวลา*/}
 
-              {/* ส่วนของการจัดวาง แกน X และ แกน Y ข้างกันแบบซ้าย-ขวา */}
               <div className="grid grid-cols-2 gap-2">
                 {/* กล่องแสดงผล แกน X */}
                 <div className={`p-2 rounded-lg border flex flex-col items-center justify-center h-14 transition-all ${
@@ -132,8 +157,6 @@ function QualityCheckGauge() {
                   </span>
                 </div>
               </div>
-
-             
             </div>
           ))}
         </div>
