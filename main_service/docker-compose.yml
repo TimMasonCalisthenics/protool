@@ -31,6 +31,7 @@ services:
       - ./storage:/app/static/uploads
       - ./backend/migrations:/app/migrations
     environment:
+      - PYTHONPATH=/app/src
       - FLASK_DEBUG=1
       - DB_HOST=db
       - DB_USER=${DB_USER}
