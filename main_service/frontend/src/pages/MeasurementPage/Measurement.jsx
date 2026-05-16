@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { StepProvider, useStep } from "@context/MeasurementContext";
-import QualityCheckGaugeX from "@pages/QualityCheckGaugePage/QualityCheckGaugeX";
-import QualityCheckGaugeY from "@pages/QualityCheckGaugePage/QualityCheckGaugeY";
+import QualityCheckGauge from "@/pages/QualityCheckGaugePage/QualityCheckGauge";
+
 
 const StepContent = () => {
   const { currentStep, zeroStep } = useStep();
@@ -16,22 +16,22 @@ const StepContent = () => {
   switch (currentStep) {
     case 1:
       // หน้าแรก: รับ Serial + วัดแกน X
-      return <QualityCheckGaugeX />;
+      return <QualityCheckGauge />;
     case 2:
       // หน้าสอง: วัดแกน Y + สรุปผล
-      return <QualityCheckGaugeY />;
+      return <QualityCheckGauge />;
     case -1:
       return null; // รอให้ useEffect ทำงาน
     default:
       // Default ให้กลับมาหน้า X เสมอ
-      return <QualityCheckGaugeX />;
+      return <QualityCheckGauge />;
   }
 };
 
 export default function Measurement() {
   return (
     <StepProvider>
-      <div className="w-auto mx-auto p-6 bg-page">
+      <div className="w-full mx-auto p-4 bg-page min-h-[calc(100-4rem)]">
         <StepContent />
       </div>
     </StepProvider>
