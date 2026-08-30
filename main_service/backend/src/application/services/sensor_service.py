@@ -1,9 +1,7 @@
+from enumCore.common import CommonEnum
 from flask import current_app
 from collections import defaultdict
-from application.dtos.sensorDTO import SensorCreate , SensorUpdate , SensorResponse
-
-from domain.exceptions.base import AppError, ConflictError
-from infrastructure.persistence.models.sensor_model import SensorModel
+from domain.exceptions.base import AppError
 from infrastructure.persistence.models.MeasurementRawValue import MeasurementRawValue
 class SensorService:
     def __init__(self, sensor_repo, measurement_raw_value_repo, measurement_draft_spec_repo, setting_repo, rule_engine):
@@ -82,7 +80,7 @@ class SensorService:
         for s in specs_to_process:
             specs_by_type.setdefault(s.sensor_type, []).append(s)
         # process mitutoyo
-        for spec in specs_by_type.get("mitutoyo", []):
+        for spec in specs_by_type.get(CommonEnum.Mitutoyo.value, []):
             values = raw_map.get(spec.spec_point_id, [])
 
             result = self.rule_engine.evaluate(spec, values)
@@ -159,56 +157,7 @@ class SensorService:
                             measurement_id,
                             spec.spec_point_id
                         )
-        # active_spec = next(
-        #     (s for s in specs_to_process if getattr(s, "active_value", False)),
-        #     None
-        # )
-        # current_app.logger.info(f"Active spec: {active_spec}")
-        # for spec in specs_to_process:
-        #     values = raw_map.get(spec.spec_point_id, [])
-        #     context = (
-        #                 {
-        #                     "has_active": True,
-        #                     "is_active": spec.id == active_spec.id
-        #                 }
-        #                 if active_spec is not None
-        #                 else {
-        #                     "has_active": False,
-        #                     "is_active": False
-        #                 }
-        #             )
-        #     result = self.rule_engine.evaluate(spec, values,context=context)
-        #     if result is None:
-        #         continue
-        #     if result.get("action"):
-        #         current_app.logger.info(f"Action: {result['action']}")
-        #         if result["action"] == "broadcast_ready":
-        #             for s in specs_to_process:
-        #                 if s.sensor_type == "air_gauge":
-        #                     self.spec_repo.update_statusGroup(s.id, "ready")
-        #             self.spec_repo.commit()
-        #             continue
-        #         if result["action"] == "update_status":
-        #             self.raw_repo.clear_by_point(
-        #                 measurement_id,
-        #                 spec.spec_point_id
-        #             )
-        #             self.spec_repo.update_status(spec.id, result["status"])
-        #         continue
-            
-        #     self.spec_repo.update_result(
-        #         spec.id,
-        #         result["value"],
-        #         result["is_pass"]
-        #         )
-        #     if result["is_pass"]:
-        #         self.raw_repo.clear_by_point(
-        #             measurement_id,
-        #             spec.spec_point_id
-        #         )
-        #         # if spec.sensor_type == "air_gauge":
-        #         #     self.spec_repo.update_status(spec.id, "pending")
-
+      
         self.sensor_repo.commit()
 
         return len(specs_to_process)

@@ -109,10 +109,10 @@ class MeasurementService:
     def delete_measurement(self, measurement_id: int):
         pass
     def create_measurements_draft(self, user_id: int, measurement: MeasurementDraftCreate):
-        
+        current_app.logger.info("create draft ")
         exist = self.measurement_repo.get_measurements_draft_byIdUser(user_id)
         
-        if exist:
+        if exist:                
             return exist
 
         product = self.product_repo.get_by_id(measurement.product_id)
@@ -157,7 +157,7 @@ class MeasurementService:
             }
             for p in product.spec_points
         ]
-
+        current_app.logger.info("draft_specs data: %s", draft_specs) # แบบนี้กราบไหว้ไวยากรณ์เก่าได้ถูกต้อง
         self.measurement_draft_spec_repo.bulk_create(draft_specs)
 
         return data
@@ -184,7 +184,6 @@ class MeasurementService:
                 } for s in data.measurement_draft_specs
             ]
         }
-        return result_dict
     def update_measurements_draft(self, draft_id:int , data:MeasurementDraftUpdate):
         draft = self.measurement_repo.get_draft_by_id(draft_id)
         if not draft:

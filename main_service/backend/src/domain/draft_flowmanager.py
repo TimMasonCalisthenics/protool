@@ -1,6 +1,7 @@
+from enumCore.common import CommonEnum
 class DraftFlowManager:
 
-    FLOW_ORDER = ['mitutoyo', 'air_gauge']
+    FLOW_ORDER = [CommonEnum.Mitutoyo.value, CommonEnum.Airguage.value,CommonEnum.Airguage_X_axis.value , CommonEnum.Airguage_Y_axis.value]
 
     @staticmethod
     def build_flow(product):

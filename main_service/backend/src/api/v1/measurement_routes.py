@@ -125,7 +125,6 @@ def delete_measurement(measurement_id):
 @role_required('operator', 'supervisor' , 'admin')
 def create_measurements_draft():
     try:
-        # data = MeasurementDraftCreate(**request.json)
         data = MeasurementDraftCreate.model_validate(request.json)
         user_id = get_jwt_identity()
         data = measurement_service.create_measurements_draft(int(user_id) , data)
